@@ -1,6 +1,6 @@
 import { Bar, BarContainer, Info, Item } from './styles'
 
-const ProgressBar = () => {
+const ProgressBar = ({ width }) => {
   return (
     <BarContainer>
       <Info>
@@ -8,7 +8,7 @@ const ProgressBar = () => {
         <Item justify="center">50</Item>
         <Item justify="flex-end">100</Item>
       </Info>
-      <Bar width="84%" />
+      <Bar width={`${width}%`} />
       <Info>
         <Item justify="flex-end">%</Item>
       </Info>

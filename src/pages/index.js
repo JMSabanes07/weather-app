@@ -2,13 +2,15 @@ import { useEffect } from 'react'
 import Header from 'components/header'
 import Main from 'components/main'
 import { HomePage } from 'components/pageStyle/home'
-import { useGeoLocation } from 'hooks/useGeoLocation'
+import { useWeather } from 'hooks/useWeather'
 
 const Home = () => {
-  const { location } = useGeoLocation()
+  const { getLocation } = useWeather()
+
   useEffect(() => {
-    console.log(location?.location)
-  }, [location])
+    getLocation()
+  }, [])
+
   return (
     <HomePage>
       <Header />

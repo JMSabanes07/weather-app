@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { WeatherImage } from 'components/weather/styles'
 
 export const HeaderContainer = styled.header`
   display: grid;
@@ -27,9 +28,12 @@ export const WeatherContainer = styled.div`
   position: relative;
   padding-top: 4rem;
   padding-bottom: 2rem;
+  ${WeatherImage} {
+    width: 7rem;
+  }
   @media (min-width: ${({ theme }) => theme.media.l}) {
-    padding-top: 4rem;
-    padding-bottom: 2rem;
+    padding-top: 2rem;
+    padding-bottom: 1.5rem;
   }
 `
 

@@ -37,7 +37,7 @@ export const Forecast = styled.ul`
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
   @media (min-width: ${({ theme }) => theme.media.s}) {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 `
 
@@ -119,5 +119,6 @@ export const Wind = styled.div`
     border-radius: 50%;
     fill: ${({ theme }) => theme.text.secondary};
     font-size: 2rem;
+    transform: ${({ degrees }) => `rotate(${degrees}deg)`};
   }
 `

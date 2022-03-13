@@ -10,5 +10,8 @@ export const GlobalStyles = createGlobalStyle`
     outline: none;
     list-style: none;
   }
+  body{
+    overflow-x: hidden;
+  }
 
 `

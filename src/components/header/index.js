@@ -14,27 +14,36 @@ import { MdMyLocation, MdLocationPin } from 'react-icons/md'
 import WeatherImage from 'components/weather'
 import Search from 'components/search'
 import { useActive } from 'hooks/useActive'
+import { useWeather } from 'hooks/useWeather'
+
+const Text = ({ render, loading }) => {
+  return <>{loading ? 'loading..' : render}</>
+}
 
 const Header = () => {
   const { activate, deactivate, isActive } = useActive()
+  const { current, loading, getLocation } = useWeather()
 
   return (
     <HeaderContainer>
       <ButtonContainer justify="space-between">
         <Button onClick={activate}>Search for places</Button>
-        <Button style="rounded">
+        <Button style="rounded" onClick={() => getLocation()}>
           <MdMyLocation />
         </Button>
       </ButtonContainer>
       <WeatherContainer>
-        <WeatherImage current="thunderstorm" />
+        <WeatherImage current={current.condition.code} />
         <CloudBackground src="/assets/Cloud-background.png" alt="" />
       </WeatherContainer>
       <CurrentInfo>
         <Degrees>
-          15<span>°C</span>
+          <Text loading={loading} render={current.degrees()} />
+          <span>°C</span>
         </Degrees>
-        <Weather>Shower</Weather>
+        <Weather>
+          <Text loading={loading} render={current.condition.text} />
+        </Weather>
         <DateTime>
           <span>Today</span>
           <span>•</span>
@@ -42,7 +51,9 @@ const Header = () => {
         </DateTime>
         <Location>
           <MdLocationPin />
-          <p>Helsinki</p>
+          <p>
+            <Text loading={loading} render={current.location} />
+          </p>
         </Location>
       </CurrentInfo>
       <Search isOpen={isActive} handleClose={deactivate} />
