@@ -7,6 +7,7 @@ const nextConfig = {
   },
   env: {
     WEATHER_KEY: 'dc2f9741146e49f2880195624221203',
+    API_ENDPOINT: 'http://api.weatherapi.com/v1',
   },
 }
 

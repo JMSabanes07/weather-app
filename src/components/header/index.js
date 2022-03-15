@@ -15,10 +15,8 @@ import WeatherImage from 'components/weather'
 import Search from 'components/search'
 import { useActive } from 'hooks/useActive'
 import { useWeather } from 'hooks/useWeather'
-
-const Text = ({ render, loading }) => {
-  return <>{loading ? 'loading..' : render}</>
-}
+import Loader from 'components/loader/loader'
+import moment from 'moment'
 
 const Header = () => {
   const { activate, deactivate, isActive } = useActive()
@@ -38,25 +36,22 @@ const Header = () => {
       </WeatherContainer>
       <CurrentInfo>
         <Degrees>
-          <Text loading={loading} render={current.degrees()} />
-          <span>°C</span>
+          {current.degrees()?.value}
+          <span>°{current.degrees()?.type}</span>
         </Degrees>
-        <Weather>
-          <Text loading={loading} render={current.condition.text} />
-        </Weather>
+        <Weather>{current.condition.text}</Weather>
         <DateTime>
-          <span>Today</span>
+          <span>{moment(current.localtime).format('ddd D MMM')}</span>
           <span>•</span>
-          <span>Fri, 5 Jun</span>
+          <span>{moment(current.localtime).format('HH : mm')} hs</span>
         </DateTime>
         <Location>
           <MdLocationPin />
-          <p>
-            <Text loading={loading} render={current.location} />
-          </p>
+          <p>{current.location}</p>
         </Location>
       </CurrentInfo>
       <Search isOpen={isActive} handleClose={deactivate} />
+      {loading && <Loader />}
     </HeaderContainer>
   )
 }

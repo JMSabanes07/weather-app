@@ -55,7 +55,8 @@ export const List = styled.ul`
   display: grid;
   gap: 1rem;
 
-  height: fit-content;
+  height: 100%;
+  overflow-y: auto;
 `
 export const Item = styled.li`
   display: flex;

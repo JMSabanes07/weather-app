@@ -8,7 +8,8 @@ const Home = () => {
   const { getLocation } = useWeather()
 
   useEffect(() => {
-    getLocation()
+    const city = localStorage.getItem('city')
+    city ? getLocation(city) : getLocation()
   }, [])
 
   return (

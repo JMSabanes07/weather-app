@@ -2,10 +2,16 @@ import { ThemeProvider } from 'styled-components'
 import { darkTheme } from 'styles/theme'
 import { GlobalStyles } from 'styles/globalStyles'
 import Head from 'next/head'
-import { GeoLocationCtx } from 'contexts/geoLocation'
+import { WeatherCtx } from 'contexts/weatherContext'
+/* to load animation for a specific spinner */
+import 'spinners-react/lib/SpinnerCircular.css'
+
+/* to load animations for all spinners at once */
+import 'spinners-react/lib/index.css'
+
 function MyApp({ Component, pageProps }) {
   return (
-    <GeoLocationCtx>
+    <WeatherCtx>
       <ThemeProvider theme={darkTheme}>
         <Head>
           <meta
@@ -16,7 +22,7 @@ function MyApp({ Component, pageProps }) {
         <GlobalStyles />
         <Component {...pageProps} />
       </ThemeProvider>
-    </GeoLocationCtx>
+    </WeatherCtx>
   )
 }
 

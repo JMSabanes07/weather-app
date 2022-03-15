@@ -13,27 +13,45 @@ import Weather from 'components/weather'
 import { MdAssistantNavigation } from 'react-icons/md'
 import ProgressBar from 'components/progressBar'
 import { useWeather } from 'hooks/useWeather'
+import Loader from 'components/loader/loader'
+import moment from 'moment'
 
 const Main = () => {
-  const { current } = useWeather()
+  const { current, loading, degreeValue, setCelsius, setFahrenheit } =
+    useWeather()
   return (
     <MainContainer>
       <Container>
         <ButtonContainer justify="flex-end">
-          <Button weight="700" style="rounded">
+          <Button
+            weight="700"
+            style="rounded"
+            isActive={degreeValue === 'c'}
+            onClick={setCelsius}
+          >
             °C
           </Button>
-          <Button weight="700" style="rounded">
+          <Button
+            weight="700"
+            style="rounded"
+            isActive={degreeValue === 'f'}
+            onClick={setFahrenheit}
+          >
             °F
           </Button>
         </ButtonContainer>
         <Forecast>
           {current.forecast?.map((e, i) => (
             <Item key={i}>
-              <h3>{e.date}</h3>
+              <h3>{moment(e.date).format('dddd')}</h3>
               <Weather current={e.day.condition.code} />
-              <p>{Math.round(e.day.mintemp_c)}°C</p>
-              <p>{Math.round(e.day.maxtemp_c)}°C</p>
+              <p>
+                {Math.round(e.day[`mintemp_${degreeValue}`])}°{degreeValue}
+              </p>
+              <p>
+                {Math.round(e.day[`maxtemp_${degreeValue}`])}°{degreeValue}
+              </p>
+              {loading && <Loader />}
             </Item>
           ))}
         </Forecast>
@@ -48,6 +66,7 @@ const Main = () => {
               <MdAssistantNavigation />
               {current.wind.direction}
             </Wind>
+            {loading && <Loader />}
           </Card>
           <Card>
             <h3>Humidity</h3>
@@ -55,18 +74,21 @@ const Main = () => {
               <span>{current.humidity}</span>%
             </p>
             <ProgressBar width={current.humidity} />
+            {loading && <Loader />}
           </Card>
           <Card>
             <h3>Visibility</h3>
             <p>
               <span>{current.visibility}</span> km
             </p>
+            {loading && <Loader />}
           </Card>
           <Card>
             <h3>Air Pressure</h3>
             <p>
               <span>{current.pressure}</span> mb
             </p>
+            {loading && <Loader />}
           </Card>
         </Hightlights>
       </Container>

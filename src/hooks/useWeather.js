@@ -1,41 +1,88 @@
 import { useState, useContext } from 'react'
-import { GeoLocationContext } from 'contexts/geoLocation'
+import { WeatherContext } from 'contexts/weatherContext'
 
 export const useWeather = () => {
-  const { location, setLocation, loading, setLoading } =
-    useContext(GeoLocationContext)
-  const [cities, setCities] = useState()
+  // prettier-ignore
+  const { 
+    location, 
+    setLocation, 
+    loading, 
+    setLoading,
+    degreeValue,
+    setDegreeValue
+  } = useContext(WeatherContext)
+
+  const [cities, setCities] = useState([])
+
+  /**
+   * Callback for save data to an state.
+   *
+   * @callback setState
+   * @param {*} any
+   */
+
+  /**
+   * Get data for weatherapi.com
+   *
+   * @param {string} method Methods: current | forecast | search | history | future | timezone | sports | astronomy | ip
+   * @param {string} q Query for the api
+   * @param {setState} callback A callback for save data to an state.
+   */
+  const fetcher = async (method, q, callback, loader = true) => {
+    loader && setLoading(true)
+    const result = await fetch(
+      `${process.env.API_ENDPOINT}/${method}.json?key=${process.env.WEATHER_KEY}&q=${q}&days=3`
+    )
+    const data = await result.json()
+    if (data?.error) return setLoading(false)
+    callback(data)
+
+    localStorage.setItem('city', data?.location?.name)
+    loader && setLoading(false)
+  }
 
   const getLocation = async (city = false) => {
-    if (!city) {
-      setLoading(true)
-      const success = async (e) => {
-        const result = await fetch(
-          `http://api.weatherapi.com/v1/forecast.json?key=${process.env.WEATHER_KEY}&q=${e.coords.latitude},${e.coords.longitude}&days=3`
-        )
-        setLocation(await result.json())
-        setLoading(false)
-      }
-      const error = (e) => {
-        console.warn(`Error ${e}`)
-        setLoading(false)
-      }
-      navigator.geolocation.getCurrentPosition(success, error)
-    } else {
-      setLoading(true)
-      const result = await fetch(
-        `http://api.weatherapi.com/v1/forecast.json?key=${process.env.WEATHER_KEY}&q=${city}&days=3`
-      )
-      setLocation(await result.json())
+    if (city) return fetcher('forecast', city, setLocation)
+
+    const success = async (e) => {
+      const { latitude, longitude } = e.coords
+      await fetcher('forecast', `${latitude}, ${longitude}`, setLocation)
+    }
+
+    const error = (e) => {
+      console.warn(`Error ${e}`)
       setLoading(false)
+    }
+
+    navigator.geolocation.getCurrentPosition(success, error)
+  }
+
+  const degrees = () => {
+    if (location?.current) {
+      return {
+        value: Math.round(location?.current[`temp_${degreeValue}`]),
+        type: degreeValue,
+      }
     }
   }
 
-  const degrees = (temp = 'c') => {
-    console.log(location)
-    if (location?.current) {
-      return Math.round(location?.current[`temp_${temp}`])
+  const setCelsius = () => {
+    setDegreeValue('c')
+  }
+
+  const setFahrenheit = () => {
+    setDegreeValue('f')
+  }
+
+  const clearCities = () => {
+    setCities([])
+  }
+
+  const searchCity = async (e) => {
+    if (e.target.value.length > 0) {
+      return fetcher('search', e.target.value, setCities, false)
     }
+    clearCities()
   }
 
   const current = {
@@ -53,14 +100,8 @@ export const useWeather = () => {
     humidity: location?.current?.humidity,
     visibility: location?.current?.vis_km,
     location: `${location?.location?.name}, ${location?.location?.region}, ${location?.location?.country}`,
-    forecast: location?.forecast.forecastday,
-  }
-
-  const searchCity = async (e) => {
-    const result = await fetch(
-      `http://api.weatherapi.com/v1/search.json?key=${process.env.WEATHER_KEY}&q=${e.target.value}}`
-    )
-    setCities(await result.json())
+    forecast: location?.forecast?.forecastday,
+    localtime: location?.location?.localtime,
   }
 
   return {
@@ -69,5 +110,9 @@ export const useWeather = () => {
     loading,
     searchCity,
     cities,
+    clearCities,
+    degreeValue,
+    setCelsius,
+    setFahrenheit,
   }
 }

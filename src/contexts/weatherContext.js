@@ -1,21 +1,24 @@
 import { createContext, useState } from 'react'
 
-export const GeoLocationContext = createContext()
+export const WeatherContext = createContext()
 
-export const GeoLocationCtx = ({ children }) => {
+export const WeatherCtx = ({ children }) => {
   const [location, setLocation] = useState()
+  const [degreeValue, setDegreeValue] = useState('c')
   const [loading, setLoading] = useState(true)
 
   return (
-    <GeoLocationContext.Provider
+    <WeatherContext.Provider
       value={{
         location,
         setLocation,
         loading,
         setLoading,
+        degreeValue,
+        setDegreeValue,
       }}
     >
       {children}
-    </GeoLocationContext.Provider>
+    </WeatherContext.Provider>
   )
 }

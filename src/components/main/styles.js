@@ -51,6 +51,7 @@ export const Item = styled.li`
   padding: 1rem;
   background: ${({ theme }) => theme.bg.primary};
   height: 177px;
+  position: relative;
   h3 {
     grid-column: 1/3;
     font-size: 1rem;
@@ -93,6 +94,7 @@ export const Card = styled.div`
 
   padding: 2rem;
   background: ${({ theme }) => theme.bg.primary};
+  position: relative;
   h3 {
     font-size: 1rem;
     font-weight: 500;

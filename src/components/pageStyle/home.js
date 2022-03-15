@@ -4,7 +4,7 @@ export const HomePage = styled.div`
   display: grid;
   grid-template-columns: 1fr;
 
-  width: 100vw;
+  width: 100%;
   min-height: 100vh;
   background: ${({ theme }) => theme.bg.secondary};
 

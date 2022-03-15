@@ -3,7 +3,7 @@ import { WeatherImage } from 'components/weather/styles'
 
 export const HeaderContainer = styled.header`
   display: grid;
-  grid-template-rows: auto auto 1fr;
+  grid-template-rows: auto 1fr 2fr;
 
   background: ${({ theme }) => theme.bg.primary};
   padding: 1rem;
@@ -60,6 +60,7 @@ export const Degrees = styled.p`
   font-size: 8rem;
   font-weight: 500;
   span {
+    text-transform: uppercase;
     font-size: 3rem;
     font-weight: 400;
   }
@@ -68,6 +69,7 @@ export const Weather = styled.p`
   align-self: center;
   font-size: 2rem;
   font-weight: 600;
+  text-align: center;
   color: ${({ theme }) => theme.text.secondary};
 `
 
@@ -77,6 +79,7 @@ export const DateTime = styled.p`
   gap: 0.7rem;
 
   font-weight: 500;
+  text-align: center;
   span {
     color: ${({ theme }) => theme.text.secondary};
   }
@@ -86,6 +89,8 @@ export const Location = styled.div`
   display: grid;
   grid-auto-flow: column;
   align-items: center;
+
+  text-align: center;
   gap: 0.5rem;
   p {
     color: ${({ theme }) => theme.text.secondary};

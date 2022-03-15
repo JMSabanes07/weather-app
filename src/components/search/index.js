@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef } from 'react'
 import {
   SearchContainer,
   Form,
@@ -12,10 +12,13 @@ import Button from 'components/button'
 import { useWeather } from 'hooks/useWeather'
 
 const Search = ({ isOpen, handleClose }) => {
-  const { searchCity, cities, getLocation } = useWeather()
+  const { searchCity, cities, clearCities, getLocation } = useWeather()
+  const inputRef = useRef()
 
   const handleClick = (city) => {
     getLocation(city)
+    inputRef.current.value = ''
+    clearCities()
     handleClose()
   }
 
@@ -28,12 +31,12 @@ const Search = ({ isOpen, handleClose }) => {
         <InputContainer>
           <MdOutlineSearch />
           <Input
+            ref={inputRef}
             type="text"
             placeholder="search location"
             onChange={searchCity}
           />
         </InputContainer>
-        <Button highlight>Search</Button>
       </Form>
       <List>
         {cities?.map((city, i) => (

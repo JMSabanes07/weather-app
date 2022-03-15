@@ -3,8 +3,8 @@ import styled, { css } from 'styled-components'
 export const Default = styled.button`
   border: none;
   padding: 11px 18px;
-  background: ${({ theme, highlight, bgNone }) => {
-    return highlight
+  background: ${({ theme, highlight, bgNone, isActive }) => {
+    return highlight || isActive
       ? theme.button.highlight
       : bgNone
       ? 'none'
