@@ -3,7 +3,7 @@ import {
   Container,
   Forecast,
   Item,
-  Hightlights,
+  Highlights,
   Card,
   Wind,
 } from './styles'
@@ -55,8 +55,8 @@ const Main = () => {
             </Item>
           ))}
         </Forecast>
-        <Hightlights>
-          <h2>Today’s Hightlights</h2>
+        <Highlights>
+          <h2>Today’s Highlights</h2>
           <Card>
             <h3>Wind status</h3>
             <p>
@@ -90,7 +90,7 @@ const Main = () => {
             </p>
             {loading && <Loader />}
           </Card>
-        </Hightlights>
+        </Highlights>
       </Container>
     </MainContainer>
   )

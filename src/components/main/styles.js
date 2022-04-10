@@ -71,7 +71,7 @@ export const Item = styled.li`
   }
 `
 
-export const Hightlights = styled.section`
+export const Highlights = styled.section`
   display: grid;
   grid-template-columns: 1fr;
   gap: 2rem;
